@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maxwell Adams Furniture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --off-white: #ffffff;
+      --text: #1a1a18;
+      --rule: #c8c5be;
+      --muted: #888480;
+      --font: 'EB Garamond', Georgia, serif;
+    }
+
+    html, body {
+      background: var(--off-white);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 18px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── SHARED SITE HEADER ── */
+    .site-header {
+      padding: 52px 52px 28px;
+      margin-bottom: 52px;
+      border-bottom: 1px solid var(--rule);
+      overflow: visible;
+    }
+    .logo-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+    .site-logo {
+      display: inline-flex;
+      background: #D13535;
+      padding: 4px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 1;
+    }
+    .site-logo video {
+      height: clamp(24px, 4.5vw, 72px);
+      width: auto;
+      display: block;
+    }
+    .site-logo::after { display: none; }
+
+    
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ══════════════════════════════════════
+       HOME PAGE  (your original design)
+    ══════════════════════════════════════ */
+    header { padding: 52px 52px 0; }
+
+    h1 {
+      font-size: 1.15rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      margin-bottom: 52px;
+      cursor: pointer;
+    }
+    h1:hover { opacity: 0.6; }
+
+    .tabs { display: flex; gap: 24px; margin-bottom: 16px; }
+
+    .tab {
+      font-family: var(--font);
+      font-size: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 0 2px;
+      color: var(--text);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .tab.active { border-bottom: 1px solid var(--text); }
+
+    .product-list { padding: 0 52px 0 104px; }
+
+    .list-rule { width: 100%; border: none; border-top: 1px solid var(--rule); }
+
+    .product-item {
+      display: block;
+      width: 100%;
+      padding: 14px 0;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      letter-spacing: 0.01em;
+      transition: opacity 0.15s;
+    }
+    .product-item:hover { opacity: 0.55; }
+
+    .hero { margin: 52px 0 0; width: 100%; height: 72vh; overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+
+    footer {
+      padding: 36px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links { display: flex; flex-wrap: wrap; gap: 28px; list-style: none; }
+    .footer-links a {
+      font-family: var(--font);
+      font-size: 0.95rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: opacity 0.15s;
+      cursor: pointer;
+    }
+    .footer-links a:hover { opacity: 0.5; }
+    .footer-copy { font-family: var(--font); font-size: 0.95rem; color: var(--text); white-space: nowrap; }
+
+    .function-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 40px; }
+
+    .func-category {
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+    .func-items { list-style: none; margin-bottom: 36px; }
+    .func-items li button {
+      display: block;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1.55;
+      transition: opacity 0.15s;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+    }
+    .func-items li button:hover { opacity: 0.5; }
+
+    /* ── FUNCTION ACCORDION ── */
+    .fn-row { border-top: 1px solid var(--rule); }
+    .fn-row-head { 
+      display: block; width: 100%;
+      padding: 14px 0;
+      font-family: var(--font); font-size: 1rem;
+      color: var(--text); background: none; border: none;
+      cursor: pointer; text-align: left;
+      letter-spacing: 0.01em; transition: opacity 0.15s;
+    }
+    .fn-row-head:hover { opacity: 0.55; }
+    .fn-row-body { display: none; padding: 0 0 24px 52px; }
+    .fn-row-body.open { display: grid; grid-template-columns: 280px 1fr; gap: 0 52px; padding-left: 52px; }
+    .fn-row-preview {
+      display: flex; align-items: flex-start; padding-top: 16px;
+    }
+    .fn-row-preview img {
+      width: 100%; max-width: 260px; height: auto;
+      object-fit: contain; display: block;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .fn-row-preview img.visible { opacity: 1; }
+    .fn-mat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0 40px;
+    }
+    .fn-mat-col { padding-top: 8px; }
+    .fn-mat-label {
+      font-size: 0.88rem; color: var(--muted);
+      border-top: 1px solid var(--rule);
+      padding-top: 10px; margin-bottom: 6px;
+    }
+    .fn-mat-item {
+      display: block; width: 100%;
+      font-family: var(--font); font-size: 1rem;
+      color: var(--text); background: none; border: none;
+      cursor: pointer; text-align: left; padding: 2px 0;
+      line-height: 1.5; transition: opacity 0.15s;
+    }
+    .fn-mat-item:hover { opacity: 0.55; }
+
+    
+    #cat-page { min-height: 100vh; }
+
+    .cat-header { padding: 52px 52px 0; }
+    .cat-back {
+      font-family: var(--font);
+      font-size: 0.9rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 28px;
+      display: block;
+      transition: opacity 0.15s;
+    }
+    .cat-back:hover { opacity: 0.6; }
+
+    .cat-title {
+      font-size: 1.15rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      margin-bottom: 52px;
+    }
+
+    .cat-product-list { padding: 0 52px; }
+
+    /* each row: name + image side by side */
+    .cat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 14px 0;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .cat-row:hover { opacity: 0.55; }
+    .cat-row-name { font-size: 1rem; letter-spacing: 0.01em; }
+    .cat-row-img { flex-shrink: 0; }
+    .cat-row-img img {
+      height: 52px;
+      width: auto;
+      max-width: 260px;
+      object-fit: contain;
+      object-position: right center;
+      display: block;
+    }
+
+    /* sub-category label above a group */
+    .cat-sub-label {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 36px;
+      margin-bottom: 4px;
+      font-style: italic;
+    }
+    .cat-sub-label:first-child { margin-top: 0; }
+
+    /* ══════════════════════════════════════
+       PRODUCT DETAIL PAGE
+    ══════════════════════════════════════ */
+    #product-page { min-height: 100vh; }
+
+    .product-wrap {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      min-height: 100vh;
+    }
+
+    /* left: images */
+    .product-images {
+      padding: 52px;
+      border-right: 1px solid var(--rule);
+    }
+
+    .product-images img {
+      width: 100%;
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    /* right: info */
+    .product-info {
+      padding: 52px 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-back {
+      font-family: var(--font);
+      font-size: 0.9rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 36px;
+      text-align: left;
+      transition: opacity 0.15s;
+    }
+    .product-back:hover { opacity: 0.6; }
+
+    .product-name {
+      font-size: 1.15rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      margin-bottom: 20px;
+    }
+
+    .product-dims {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+
+    .product-year {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .product-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .product-inquiry {
+      display: inline-block;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--text);
+      padding-bottom: 1px;
+      margin-bottom: 44px;
+      transition: opacity 0.15s;
+    }
+    .product-inquiry:hover { opacity: 0.5; }
+
+    /* swatches */
+    .swatch-label {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+    .swatches { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+    .swatch {
+      display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer;
+    }
+    .swatch img {
+      width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+      border: 1.5px solid transparent; transition: border-color 0.15s;
+    }
+    .swatch:hover img, .swatch.active img { border-color: var(--text); }
+    .swatch span { font-size: 0.72rem; color: var(--muted); text-align: center; max-width: 48px; line-height: 1.2; }
+
+    /* location card */
+    .location-label { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+    .location-card { display: block; text-decoration: none; color: var(--text); }
+    .location-card img { width: 100%; height: 120px; object-fit: cover; margin-bottom: 8px; display: block; }
+    .location-card h4 { font-size: 1rem; font-weight: 400; margin-bottom: 6px; }
+    .location-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+
+    /* related */
+    .related-label { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-top: 36px; margin-bottom: 12px; }
+    .related-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0; border-top: 1px solid var(--rule);
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    .related-item:last-child { border-bottom: 1px solid var(--rule); }
+    .related-item:hover { opacity: 0.55; }
+    .related-item img { width: 80px; height: 28px; object-fit: contain; object-position: left; flex-shrink: 0; }
+    .related-item span { font-size: 0.9rem; }
+
+    /* ══════════════════════════════════════
+       PHILOSOPHY PAGE
+    ══════════════════════════════════════ */
+    #philosophy-page { min-height: 100vh; }
+
+    .text-page-header { padding: 52px 52px 0; }
+    .text-page-back {
+      font-family: var(--font); font-size: 0.9rem; color: var(--muted);
+      background: none; border: none; cursor: pointer;
+      padding: 0; margin-bottom: 28px; display: block; transition: opacity 0.15s;
+    }
+    .text-page-back:hover { opacity: 0.6; }
+    .text-page-title { font-size: 1.15rem; font-weight: 400; letter-spacing: 0.01em; margin-bottom: 52px; }
+
+    .text-page-body { padding: 0 52px 80px; max-width: 780px; }
+
+    .text-intro { font-size: 1rem; color: var(--muted); line-height: 1.7; margin-bottom: 36px; }
+
+    .text-page-img { width: 100%; max-width: 700px; margin: 36px 0; display: block; }
+
+    .essay-head { margin-bottom: 28px; }
+    .essay-head-title { font-size: 1rem; font-weight: 400; margin-bottom: 2px; }
+    .essay-head-by { font-size: 0.9rem; color: var(--muted); font-style: italic; }
+
+    .essay-body p { font-size: 1rem; line-height: 1.75; margin-bottom: 18px; }
+    .essay-body blockquote {
+      margin: 18px 0 18px 28px; padding-left: 16px;
+      border-left: 1px solid var(--rule);
+      font-size: 0.95rem; line-height: 1.7; color: var(--muted);
+    }
+
+    .essay-footnote { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic; }
+
+    /* ══════════════════════════════════════
+       FAQ PAGE
+    ══════════════════════════════════════ */
+    #faq-page { min-height: 100vh; }
+
+    .faq-body { padding: 0 52px 80px; max-width: 680px; }
+
+    .faq-block { margin-bottom: 28px; }
+    .faq-q { font-size: 1rem; font-weight: 400; margin-bottom: 6px; }
+    .faq-a { font-size: 0.95rem; color: var(--muted); line-height: 1.7; }
+    .faq-a a { color: var(--text); }
+    .faq-a address { font-style: normal; }
+    .faq-a p + p { margin-top: 8px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .fn-mat-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-wrap { grid-template-columns: 1fr; }
+      .product-images { border-right: none; border-bottom: 1px solid var(--rule); }
+      .product-info { position: static; height: auto; }
+    }
+
+    @media (max-width: 640px) {
+      /* padding */
+      header, .product-list, footer,
+      .cat-product-list, .text-page-body,
+      .faq-body { padding-left: 24px; padding-right: 24px; }
+
+      /* site header */
+      .site-header { padding: 24px 24px 20px; }
+
+      /* logos — shrink on mobile, no wrap */
+      .logo-row { gap: 4px; flex-wrap: nowrap; }
+      .site-logo video { height: clamp(20px, 7vw, 48px); }
+
+      /* nav tabs */
+      header { padding: 24px 24px 0; }
+
+      /* footer */
+      footer { flex-direction: column; align-items: flex-start; gap: 8px; padding: 24px; }
+      footer a, footer span { border: none; padding: 4px 0; }
+
+      /* catalog rows */
+      .catalog-row-name { width: 160px; }
+
+      /* accordion */
+      .fn-mat-grid { grid-template-columns: 1fr; }
+      .fn-row-body.open { grid-template-columns: 1fr; }
+      .fn-row-preview { display: none; }
+
+      /* product page */
+      .product-main { padding: 24px 24px 40px; }
+      .product-sidebar { padding: 24px; }
+      .product-images img { max-width: 100%; }
+
+      /* text pages */
+      .text-page-body { padding: 0 24px 40px; }
+      .faq-body { padding: 0 24px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<div id="home-page" class="page active">
+
+  <header>
+    <div class="logo-row" style="margin-bottom:52px;">
+      <div class="site-logo" onclick="navigate('home')">
+        <video src="https://res.cloudinary.com/ddymvc8fq/video/upload/v1777837668/HolobiantLogo_krl4ey.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="Filter by">
+      <button class="tab active" onclick="setTab(this,'material')">Material</button>
+      <button class="tab" onclick="setTab(this,'function')">Function</button>
+    </nav>
+  </header>
+
+  <main class="product-list" style="padding-left: 52px;">
+    <hr class="list-rule" />
+
+    <!-- Material view -->
+    <div id="material-list"></div>
+
+    <!-- Function view -->
+    <div id="function-list" style="display:none"></div>
+  </main>
+
+
+
+  <footer>
+    <ul class="footer-links">
+      <li><a href="https://docs.google.com/spreadsheets/d/1iC903AIjpmGE5drJUWHj9pwxc2Mo4-CIz0HyMkqgxCs/edit?usp=sharing" target="_blank">Hours</a></li>
+      <li><a onclick="navigate('philosophy')">Philosophy</a></li>
+      <li><a onclick="navigate('faq')">FAQ</a></li>
+      <li><a href="mailto:2triops@proton.me">Press</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Adams Foundation</span>
+  </footer>
+
+</div><!-- /home-page -->
+
+
+<!-- ══════════════════════════════════════
+     MATERIAL CATEGORY PAGE
+══════════════════════════════════════ -->
+<div id="cat-page" class="page">
+
+  <div class="site-header">
+    <div class="logo-row">
+      <div class="site-logo" onclick="navigate('home')">
+        <video src="https://res.cloudinary.com/ddymvc8fq/video/upload/v1777837668/HolobiantLogo_krl4ey.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat-product-list" style="padding: 0 52px;">
+    <h2 class="cat-title" id="cat-title" style="font-size:1.15rem;font-weight:400;margin-bottom:28px;"></h2>
+  </div>
+  <div class="cat-product-list" id="cat-list"></div>
+
+  <footer>
+    <ul class="footer-links">
+      <li><a href="https://docs.google.com/spreadsheets/d/1iC903AIjpmGE5drJUWHj9pwxc2Mo4-CIz0HyMkqgxCs/edit?usp=sharing" target="_blank">Hours</a></li>
+      <li><a onclick="navigate('philosophy')">Philosophy</a></li>
+      <li><a onclick="navigate('faq')">FAQ</a></li>
+      <li><a href="mailto:21triops@proton.me">Press</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Adams Foundation</span>
+  </footer>
+
+</div><!-- /cat-page -->
+
+
+<!-- ══════════════════════════════════════
+     PRODUCT DETAIL PAGE
+══════════════════════════════════════ -->
+<div id="product-page" class="page">
+  <div class="site-header" style="padding-left:52px; padding-right:52px;">
+    <div class="logo-row">
+      <div class="site-logo" onclick="navigate('home')">
+        <video src="https://res.cloudinary.com/ddymvc8fq/video/upload/v1777837668/HolobiantLogo_krl4ey.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
+  </div>
+  <div class="product-wrap">
+    <div class="product-images" id="product-images"></div>
+    <div class="product-info" id="product-info"></div>
+  </div>
+</div><!-- /product-page -->
+
+,
+<!-- ══════════════════════════════════════
+     PHILOSOPHY PAGE
+══════════════════════════════════════ -->
+<div id="philosophy-page" class="page">
+
+  <div class="site-header">
+    <div class="logo-row">
+      <div class="site-logo" onclick="navigate('home')">
+        <video src="https://res.cloudinary.com/ddymvc8fq/video/upload/v1777837668/HolobiantLogo_krl4ey.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
+  </div>
+  <div class="text-page-body" style="padding-top:0;">
+    <h2 class="text-page-title">Philosophy</h2>
+    <p class="text-intro">Artist Statement</p>
+    <p class="text-intro">Material</p>
+    <p class="text-intro">interest</p>
+
+    <img class="text-page-img" src="" alt="">
+
+    <div class="essay-head">
+      <div class="essay-head-title">It's Hard to Find a Good Lamp</div>
+      <div class="essay-head-by">Maxwell Adams, 1993</div>
+    </div>
+
+    <div class="essay-body">
+      <p>In the middle 1980s I wrote that in the middle 1960s someone asked me to design a coffee table. I thought that a work of mine which was essentially a rectangular volume with the upper surface recessed could be altered. This debased the work and produced a bad table, which I later threw away. The configuration and the scale of art cannot be transposed into furniture and architecture. The intent of art is different from that of the latter, which must be functional. If a chair or a building is not functional, if it appears to be only art, it is ridiculous.</p>
+
+      <p>The art of a chair is not its resemblance to art, but is partly its reasonableness, usefulness, and scale as a chair. These are proportion, which is visible reasonableness. The art in art is partly the assertion of someone's interest regardless of other considerations. A work of art exists as itself; a chair exists as a chair itself. And the idea of a chair isn't a chair.</p>
+
+      <p>Of course if a person is at once making art and building furniture and architecture there will be similarities. The various interests in form will be consistent. If you like simple forms in art you will not make complicated ones in architecture. But the difference between art and architecture is fundamental. Furniture and architecture can only be approached as such. Art cannot be imposed upon them. If their nature is seriously considered the art will occur, even art close to art itself.</p>
+
+      <img class="text-page-img" src="https://juddfurniture.wpenginepowered.com/wp-content/uploads/page/philosophy/jf_2017_04067-1600x1040.jpg" alt="">
+
+      <p>I kept the building but moved to West Texas with my two children, where I rented a small house on the edge of town. The house was quartered into eleven-by-eleven-foot rooms. There was no furniture and none to be bought. The two small children played and slept in one of the four rooms. In order to give them each an area of their own notwithstanding the one room, I designed a bed which was a closed platform of one-by-twelves with a central, free-standing wall, also of one-by-twelves. I liked the bed a great deal, and in fact the whole house, for which I made other furniture.</p>
+
+      <p>It's impossible to go to the store and buy a chair. In North America since the "Mission" style became unfashionable in the 1920s there has been no furniture which is pleasurable to look at, fairly available, and moderate in price. Almost all furniture made since the 1920s, in any of the "styles," has been junk for consumers.</p>
+
+      <p>I am often asked if the furniture is art. The furniture is furniture and is only art in that architecture, ceramics, textiles, and many things are art. We try to keep the furniture out of art galleries to avoid this confusion. I am often told that the furniture is not comfortable. The furniture is comfortable to me. Rather than making a chair to sleep in or a machine to live in, it is better to make a bed. A straight chair is best for eating or writing. The third position is standing.</p>
+    </div>
+
+    <div class="essay-footnote">
+      Published in <em>Maxwell Adams Writings</em>, ed. L. Adams and C. Murray (New York: Adams Foundation/David Zwirner Books, 2016).
+    </div>
+  </div>
+
+  <footer>
+    <ul class="footer-links">
+      <li><a href="https://docs.google.com/spreadsheets/d/1iC903AIjpmGE5drJUWHj9pwxc2Mo4-CIz0HyMkqgxCs/edit?usp=sharing" target="_blank">Hours</a></li>
+      <li><a onclick="navigate('philosophy')">Philosophy</a></li>
+      <li><a onclick="navigate('faq')">FAQ</a></li>
+      <li><a href="mailto:press@example.com">Press</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Adams Foundation</span>
+  </footer>
+
+</div><!-- /philosophy-page -->
+
+
+<!-- ══════════════════════════════════════
+     FAQ PAGE
+══════════════════════════════════════ -->
+<div id="faq-page" class="page">
+
+  <div class="site-header">
+    <div class="logo-row">
+      <div class="site-logo" onclick="navigate('home')">
+        <video src="https://res.cloudinary.com/ddymvc8fq/video/upload/v1777837668/HolobiantLogo_krl4ey.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
+  </div>
+  <div class="faq-body" style="padding-top:0;">
+    <h2 class="text-page-title" style="margin-bottom:28px;">FAQ</h2>
+
+    <div class="faq-block">
+      <div class="faq-q">Contact</div>
+      <div class="faq-a">
+        <address>
+          Maxwell Adams® Furniture<br>
+          101 Spring Street<br>
+          New York, NY 10012<br>
+          +1 212 219 2747<br>
+          <a href="mailto:office@maxwelladams.furniture">office@maxwelladams.furniture</a>
+        </address>
+        <p style="margin-top:8px">All press inquiries: <a href="mailto:press@maxwelladams.furniture">press@maxwelladams.furniture</a></p>
+      </div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Trademark</div>
+      <div class="faq-a">Maxwell Adams® is a registered trademark of Adams Foundation.</div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Retailers</div>
+      <div class="faq-a">
+        <p>Maxwell Adams® Furniture maintains established relationships with select galleries and furniture dealers. Please inquire for referral closest to your location.</p>
+        <p>Maxwell Adams® Furniture is represented by Salon 94 Design in North America.</p>
+        <address style="margin-top:8px">
+          Salon 94 Design<br>
+          3 East 89th Street<br>
+          New York, New York 10128<br>
+          <a href="mailto:info@salon94design.com">info@salon94design.com</a>
+        </address>
+      </div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Sales</div>
+      <div class="faq-a">All proceeds benefit Adams Foundation, a non-profit organization based in New York and Marfa, Texas.</div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Return Policy</div>
+      <div class="faq-a">All sales of Maxwell Adams® Furniture are final.</div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Pricing &amp; Tax</div>
+      <div class="faq-a">Prices listed on this website are in US dollars. Prices do not include applicable sales tax or shipping and are subject to change. Maxwell Adams® Furniture reserves the right to restrict or cancel orders.</div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Lead Time</div>
+      <div class="faq-a">The lead time for Custom Order furniture is a minimum of 48 weeks for wood and about 16 weeks for metal.</div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Shipping</div>
+      <div class="faq-a">
+        <p>Customers are responsible for cost and arrangement of shipping. Please note United States (California) as the origin for wood furniture and Switzerland (Dübendorf) as the origin for metal furniture.</p>
+        <p>Transcon International is the preferred shipper. Please contact +1 718 585 1762 for shipping information.</p>
+      </div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Care &amp; Treatment</div>
+      <div class="faq-a">Use a microfiber cloth when dusting. Do not use any solvents on wood, metal, or painted aluminum furniture. Only distilled water is recommended. Surfaces will change over time; wood will darken and materials such as copper will tarnish.</div>
+    </div>
+
+    <hr class="list-rule" style="margin-bottom:28px">
+
+    <div class="faq-block">
+      <div class="faq-q">Furniture Numbers</div>
+      <div class="faq-a">Furniture numbers reference the 1993 retrospective exhibition catalogue for wood pieces and production numbers for metal pieces.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <ul class="footer-links">
+      <li><a href="https://docs.google.com/spreadsheets/d/1iC903AIjpmGE5drJUWHj9pwxc2Mo4-CIz0HyMkqgxCs/edit?usp=sharing" target="_blank">Hours</a></li>
+      <li><a onclick="navigate('philosophy')">Philosophy</a></li>
+      <li><a onclick="navigate('faq')">FAQ</a></li>
+      <li><a href="mailto:press@example.com">Press</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Adams Foundation</span>
+  </footer>
+
+</div><!-- /faq-page -->
+
+
+<script>
+/* ─────────────────────────────────────────
+   DATA
+───────────────────────────────────────── */
+const B = 'https://juddfurniture.wpenginepowered.com/wp-content/uploads/';
+
+const ITEMS = [
+  // ONE-BY-TWELVES — beds
+  { id:'fifth-floor-bed-03', name:'Fifth Floor Bed 3', mat:'one-by-twelves', fn:'beds',
+    thumb:B+'furniture/fifth-floor-bed/Fifth-Floor-Bed-3-01-550x167.jpg',
+    imgs:[B+'furniture/fifth-floor-bed/Fifth-Floor-Bed-3-01-1600x484.jpg', B+'furniture/fifth-floor-bed/Fifth-Floor-Bed-3-2-1158x1600.jpg'],
+    dims:'1.5 × 148.5 × 114.75 in\n4 × 377 × 292 cm', year:'Designed 1970',
+    note:'Originally made in black walnut for the fifth floor of 101 Spring Street',
+    sw:[{n:'Black walnut',i:B+'swatch/black-walnut/Wood-Walnut.jpg'},{n:'Cherry',i:B+'swatch/black-walnut/Wood-Cherry.jpg'},{n:'Pine',i:B+'swatch/black-walnut/Wood-Pine-One.jpg'},{n:'Cypress',i:B+'swatch/black-walnut/Wood-Cypress.jpg'},{n:'Douglas fir',i:B+'swatch/black-walnut/Wood-Fir.jpg'},{n:'Maple',i:B+'swatch/black-walnut/Wood-Maple.jpg'},{n:'Oak',i:B+'swatch/black-walnut/Wood-Oak.jpg'}],
+    loc:{name:'101 Spring Street',img:B+'Spring-Street.jpg',desc:'This five-story cast-iron building at the corner of Spring Street and Mercer Street in New York City was renovated as a residence and studio. It was the first building owned and where architectural and installation concepts were developed. Acquired: 1968'} },
+
+  // ONE-BY-TWELVES — chairs
+  { id:'back-slant-chair-8407',    name:'Back Slant Chair 84-7',    mat:'one-by-twelves', fn:'chairs', thumb:B+'backward-slant-chair-84-85-344x550.jpg',               imgs:[B+'backward-slant-chair-84-85-344x550.jpg'],               dims:'', year:'Designed 1984–85', note:'', sw:[], loc:null },
+
+
+  // ONE-BY-TWELVES — desks
+  { id:'desk-33',                    name:'Desk 33',                    mat:'one-by-twelves', fn:'desks', thumb:B+'desk-33-550x488.jpg',                imgs:[B+'desk-33-550x488.jpg'],               dims:'', year:'', note:'', sw:[], loc:null },
+ 
+
+  // ONE-BY-TWELVES — shelves
+  { id:'bookshelf-34',  name:'Bookshelf 34',  mat:'one-by-twelves', fn:'shelves', thumb:B+'furniture/bookshelf-34/Bookshelf-34-01-550x525.jpg', imgs:[B+'furniture/bookshelf-34/Bookshelf-34-01-550x525.jpg'], dims:'', year:'', note:'', sw:[], loc:null },
+ 
+  // ONE-BY-TWELVES — tables
+  { id:'fourth-floor-low-table-18',   name:'Fourth Floor Low Table 18',   mat:'one-by-twelves', fn:'tables', thumb:B+'4th-floor-low-table-18-550x190.jpg',  imgs:[B+'4th-floor-low-table-18-550x190.jpg'],  dims:'', year:'', note:'', sw:[], loc:null },
+ 
+
+  // TWO-BY-TWELVES — beds
+  { id:'summer-bed-121', name:'Summer Bed 121', mat:'two-by-twelves', fn:'beds', thumb:B+'furniture/summer-bed/Summer-Bed-121-01-550x213.jpg', imgs:[B+'furniture/summer-bed/Summer-Bed-121-01-550x213.jpg'], dims:'', year:'', note:'', sw:[], loc:null },
+
+  // TWO-BY-TWELVES — benches
+  { id:'bench-31',           name:'Bench 31',           mat:'two-by-twelves', fn:'benches', thumb:B+'seat_table-bench-31-550x382.jpg',          imgs:[B+'seat_table-bench-31-550x382.jpg'],         dims:'', year:'', note:'', sw:[], loc:null },
+ 
+
+  // TWO-BY-TWELVES — chairs / desks / tables
+  { id:'la-mansana-chair-22',name:'La Mansana Chair 22',mat:'two-by-twelves',fn:'chairs',thumb:B+'furniture/la-mansana-chair/La-Mansana-Chair-22-01-319x550.jpg',imgs:[B+'furniture/la-mansana-chair/La-Mansana-Chair-22-01-319x550.jpg'],dims:'',year:'',note:'',sw:[],loc:null},
+ 
+
+  // WOOD FRAME — chairs
+  { id:'library-chair-42',              name:'Library Chair 42',              mat:'wood-frame', fn:'chairs', thumb:B+'library-chair-42-418x550.jpg',                              imgs:[B+'library-chair-42-418x550.jpg'],                              dims:'', year:'', note:'', sw:[], loc:null },
+
+  // WOOD FRAME — stools / tables
+  { id:'library-stool-42',     name:'Library Stool 42',     mat:'wood-frame', fn:'stools', thumb:B+'library-stool-42-528x550.jpg',           imgs:[B+'library-stool-42-528x550.jpg'],           dims:'', year:'', note:'', sw:[], loc:null },
+ 
+
+  // PLYWOOD — beds / benches / chairs / desks / stools / tables
+  { id:'plywood-bed-87-sq',  name:'Plywood Bed 87-square',  mat:'plywood', fn:'beds',    thumb:B+'plywood-platform-bed-87-square-550x172.jpg',    imgs:[B+'plywood-platform-bed-87-square-550x172.jpg'],    dims:'', year:'', note:'', sw:[], loc:null },
+ 
+
+  // SHEET METAL
+  { id:'metal-bed-111',        name:'Metal Bed 111',        mat:'sheet-metal', fn:'beds',    thumb:B+'bed-11-550x267.jpg',             imgs:[B+'bed-11-550x267.jpg'],             dims:'', year:'', note:'', sw:[], loc:null },
+ 
+
+  // STEEL FRAME
+  { id:'arch-studio-bed-91',  name:'Architecture Studio Bed 91', mat:'steel-frame', fn:'beds',    thumb:B+'furniture/architecture-studio-bed-91/91-01-550x201.jpg',  imgs:[B+'furniture/architecture-studio-bed-91/91-01-550x201.jpg'],   dims:'', year:'', note:'', sw:[], loc:null },
+ 
+];
+
+const MAT_LABELS = {
+  'one-by-twelves':'One-by-Twelves','two-by-twelves':'Two-by-Twelves',
+  'wood-frame':'Wood Frame','plywood':'Plywood',
+  'sheet-metal':'Sheet Metal','steel-frame':'Steel Frame'
+};
+const FN_ORDER = ['beds','benches','chairs','desks','shelves','stools','tables'];
+const FN_LABELS = {beds:'Beds',benches:'Benches & Daybeds',chairs:'Chairs',desks:'Desks',shelves:'Shelves',stools:'Stools',tables:'Tables'};
+
+/* ─────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────── */
+function navigate(page, param) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  window.scrollTo(0, 0);
+
+  if (page === 'home') {
+    document.getElementById('home-page').classList.add('active');
+  } else if (page === 'cat') {
+    renderCat(param);
+    document.getElementById('cat-page').classList.add('active');
+  } else if (page === 'product') {
+    renderProduct(param);
+    document.getElementById('product-page').classList.add('active');
+  } else if (page === 'philosophy') {
+    document.getElementById('philosophy-page').classList.add('active');
+  } else if (page === 'faq') {
+    document.getElementById('faq-page').classList.add('active');
+  }
+}
+
+/* ─────────────────────────────────────────
+   HOME — tab toggle + populate function grid
+───────────────────────────────────────── */
+function setTab(btn, view) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('material-list').style.display = view === 'material' ? '' : 'none';
+  document.getElementById('function-list').style.display = view === 'function' ? '' : 'none';
+  if (view === 'function') buildFnAccordion();
+  if (view === 'material') buildMatAccordion();
+}
+
+let matAccordionBuilt = false;
+function buildMatAccordion() {
+  if (matAccordionBuilt) return;
+  matAccordionBuilt = true;
+
+  const MAT_ORDER = ['one-by-twelves','two-by-twelves','wood-frame','plywood','sheet-metal','steel-frame'];
+  const container = document.getElementById('material-list');
+  let html = '';
+
+  MAT_ORDER.forEach(mat => {
+    const matItems = ITEMS.filter(i => i.mat === mat);
+    if (!matItems.length) return;
+
+    // Group by function
+    const cols = {};
+    FN_ORDER.forEach(f => { if (matItems.some(i => i.fn === f)) cols[f] = []; });
+    matItems.forEach(i => { if (cols[i.fn]) cols[i.fn].push(i); });
+
+    const colKeys = FN_ORDER.filter(f => cols[f]);
+    const rows = [];
+    for (let i = 0; i < colKeys.length; i += 3) rows.push(colKeys.slice(i, i + 3));
+
+    const previewId = `prev-mat-${mat}`;
+    let bodyHtml = `<div class="fn-row-preview"><img src="" alt="" id="${previewId}"></div><div>` +
+      rows.map(row => `
+      <div class="fn-mat-grid">
+        ${row.map(f => `
+          <div class="fn-mat-col">
+            <div class="fn-mat-label">${FN_LABELS[f]}</div>
+            ${cols[f].map(item => `
+              <button class="fn-mat-item"
+                onmouseenter="showPreview('${previewId}','${item.thumb}')"
+                onmouseleave="hidePreview('${previewId}')"
+                onclick="navigate('product','${item.id}')">${item.name}</button>
+            `).join('')}
+          </div>`).join('')}
+      </div>`).join('') + '</div>';
+
+    html += `
+      <div class="fn-row">
+        <button class="fn-row-head" onclick="toggleAccordion(this)">${MAT_LABELS[mat]}</button>
+        <div class="fn-row-body">${bodyHtml}</div>
+      </div>`;
+  });
+
+  html += '<hr class="list-rule">';
+  container.innerHTML = html;
+}
+
+
+let fnAccordionBuilt = false;
+
+function buildFnAccordion() {
+  if (fnAccordionBuilt) return;
+  fnAccordionBuilt = true;
+
+  const MAT_ORDER = ['one-by-twelves','two-by-twelves','wood-frame','plywood','sheet-metal','steel-frame'];
+  const container = document.getElementById('function-list');
+  let html = '';
+
+  FN_ORDER.forEach(fn => {
+    const fnItems = ITEMS.filter(i => i.fn === fn);
+    if (!fnItems.length) return;
+
+    const cols = {};
+    MAT_ORDER.forEach(m => { if (fnItems.some(i => i.mat === m)) cols[m] = []; });
+    fnItems.forEach(i => { if (cols[i.mat]) cols[i.mat].push(i); });
+
+    const colKeys = MAT_ORDER.filter(m => cols[m]);
+    const rows = [];
+    for (let i = 0; i < colKeys.length; i += 3) rows.push(colKeys.slice(i, i + 3));
+
+    const previewId = `prev-fn-${fn}`;
+    let bodyHtml = `<div class="fn-row-preview"><img src="" alt="" id="${previewId}"></div><div>` +
+      rows.map(row => `
+      <div class="fn-mat-grid">
+        ${row.map(m => `
+          <div class="fn-mat-col">
+            <div class="fn-mat-label">${MAT_LABELS[m]}</div>
+            ${cols[m].map(item => `
+              <button class="fn-mat-item"
+                onmouseenter="showPreview('${previewId}','${item.thumb}')"
+                onmouseleave="hidePreview('${previewId}')"
+                onclick="navigate('product','${item.id}')">${item.name}</button>
+            `).join('')}
+          </div>`).join('')}
+      </div>`).join('') + '</div>';
+
+    html += `
+      <div class="fn-row">
+        <button class="fn-row-head" onclick="toggleAccordion(this)">${FN_LABELS[fn]}</button>
+        <div class="fn-row-body">${bodyHtml}</div>
+      </div>`;
+  });
+
+  html += '<hr class="list-rule">';
+  container.innerHTML = html;
+}
+
+function toggleAccordion(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.fn-row-body').forEach(b => b.classList.remove('open'));
+  if (!isOpen) body.classList.add('open');
+}
+
+function showPreview(id, src) {
+  const img = document.getElementById(id);
+  if (!img) return;
+  img.src = src;
+  img.classList.add('visible');
+}
+
+function hidePreview(id) {
+  const img = document.getElementById(id);
+  if (!img) return;
+  img.classList.remove('visible');
+}
+
+
+
+function renderCat(mat) {
+  document.getElementById('cat-title').textContent = MAT_LABELS[mat];
+
+  const items = ITEMS.filter(i => i.mat === mat);
+
+  // Group by function
+  const groups = {};
+  FN_ORDER.forEach(fn => { if (items.some(i => i.fn === fn)) groups[fn] = []; });
+  items.forEach(i => { if (groups[i.fn]) groups[i.fn].push(i); });
+
+  let html = '';
+  FN_ORDER.forEach(fn => {
+    if (!groups[fn] || !groups[fn].length) return;
+    html += `<p class="cat-sub-label">${FN_LABELS[fn]}</p>`;
+    html += `<hr class="list-rule">`;
+    groups[fn].forEach(item => {
+      html += `
+        <div class="cat-row" onclick="navigate('product','${item.id}')">
+          <span class="cat-row-name">${item.name}</span>
+          <div class="cat-row-img"><img src="${item.thumb}" alt="${item.name}" loading="lazy"></div>
+        </div>
+        <hr class="list-rule">`;
+    });
+  });
+
+  document.getElementById('cat-list').innerHTML = html;
+}
+
+/* ─────────────────────────────────────────
+   PRODUCT DETAIL PAGE
+───────────────────────────────────────── */
+function renderProduct(id) {
+  const item = ITEMS.find(i => i.id === id);
+  if (!item) return;
+
+  // Images
+  document.getElementById('product-images').innerHTML =
+    item.imgs.map(src => `<img src="${src}" alt="${item.name}" loading="lazy">`).join('');
+
+  // Info panel
+  const swatchHtml = item.sw.length ? `
+    <p class="swatch-label">Wood</p>
+    <div class="swatches">
+      ${item.sw.map((s, i) => `
+        <div class="swatch ${i === 0 ? 'active' : ''}" onclick="pickSwatch(this)">
+          <img src="${s.i}" alt="${s.n}">
+          <span>${s.n}</span>
+        </div>`).join('')}
+    </div>` : '';
+
+  const locHtml = item.loc ? `
+    <p class="location-label">${item.name} can be seen at</p>
+    <a class="location-card" href="#" onclick="return false">
+      <img src="${item.loc.img}" alt="${item.loc.name}">
+      <h4>${item.loc.name}</h4>
+      <p>${item.loc.desc}</p>
+    </a>` : '';
+
+  const related = ITEMS.filter(i => i.fn === item.fn && i.id !== item.id).slice(0, 7);
+  const relHtml = related.length ? `
+    <p class="related-label">${FN_LABELS[item.fn]}</p>
+    ${related.map(r => `
+      <div class="related-item" onclick="navigate('product','${r.id}')">
+        <img src="${r.thumb}" alt="${r.name}">
+        <span>${r.name}</span>
+      </div>`).join('')}` : '';
+
+  document.getElementById('product-info').innerHTML = `
+    <h2 class="product-name">${item.name}</h2>
+    ${item.dims ? `<p class="product-dims">${item.dims.replace('\n', '<br>')}</p>` : ''}
+    ${item.year ? `<p class="product-year">${item.year}</p>` : ''}
+    ${item.note ? `<p class="product-note">${item.note}</p>` : ''}
+    <a class="product-inquiry" href="mailto:2triops@proton.me">Order Inquiry</a>
+    ${swatchHtml}
+    ${locHtml}
+    ${relHtml}
+  `;
+}
+
+function pickSwatch(el) {
+  el.closest('.swatches').querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Build material accordion on page load
+buildMatAccordion();
+</script>
+
+<audio id="bg-audio" src="https://res.cloudinary.com/duvw9i5df/video/upload/v1778451061/geometry_on_the_atm_machine_shortened_ikaun7.mp3" loop></audio>
+<script>
+  const audio = document.getElementById('bg-audio');
+  audio.volume = 0;
+
+  function fadeIn() {
+    audio.currentTime = 15;
+    audio.volume = 0;
+    const target = 0.3;
+    const duration = 14000; // 14 seconds
+    const steps = 60;
+    const increment = target / steps;
+    const interval = duration / steps;
+    const fade = setInterval(() => {
+      if (audio.volume < target - increment) {
+        audio.volume = Math.min(audio.volume + increment, target);
+      } else {
+        audio.volume = target;
+        clearInterval(fade);
+      }
+    }, interval);
+  }
+
+  audio.play().then(fadeIn).catch(() => {
+    document.addEventListener('click', () => audio.play().then(fadeIn), { once: true });
+  });
+</script>
+
+</body>
+</html>
