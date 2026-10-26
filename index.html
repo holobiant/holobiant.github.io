@@ -24,6 +24,7 @@
       font-size: 18px;
       line-height: 1.5;
       min-height: 100vh;
+      padding-bottom: 96px;
     }
 
     /* ── SHARED SITE HEADER ── */
@@ -44,14 +45,33 @@
       display: inline-flex;
       background: #D13535;
       padding: 4px;
-      cursor: pointer;
+      cursor: grab;
       position: relative;
       flex-shrink: 1;
+      user-select: none;
+      touch-action: none;
+    }
+    .site-logo.dragging {
+      cursor: grabbing;
     }
     .site-logo video {
       height: clamp(24px, 4.5vw, 72px);
       width: auto;
       display: block;
+    }
+    .logo-media {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+    }
+    .logo-seam {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1.2%;
+      background: #D13535;
+      transform: translateX(-50%);
+      pointer-events: none;
     }
 
     .page { display: none; }
@@ -61,7 +81,7 @@
        HOME PAGE
     ══════════════════════════════════════ */
     header { padding: 52px 52px 0; }
-    header > .logo-row { margin-bottom: 52px; }
+    header > .logo-row { margin-bottom: 40px; }
 
     .tabs { display: flex; gap: 24px; margin-bottom: 16px; }
 
@@ -84,12 +104,19 @@
     .list-rule { width: 100%; border: none; border-top: 1px solid var(--rule); }
 
     footer {
-      padding: 36px 52px;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--off-white);
+      border-top: 1px solid var(--rule);
+      padding: 24px 52px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
+      z-index: 500;
     }
 
     .footer-links { display: flex; flex-wrap: wrap; gap: 28px; list-style: none; }
@@ -108,7 +135,7 @@
     .fn-row { border-top: 1px solid var(--rule); }
     .fn-row-head {
       display: block; width: 100%;
-      padding: 14px 0;
+      padding: 20px 0;
       font-family: var(--font); font-size: 1rem;
       color: var(--text); background: none; border: none;
       cursor: pointer; text-align: left;
@@ -119,8 +146,8 @@
     .fn-row-body.open { display: grid; grid-template-columns: 280px 1fr; gap: 0 52px; padding-left: 52px; }
     .fn-row-preview { display: flex; align-items: flex-start; padding-top: 16px; }
     .fn-row-preview img {
-      width: 100%; max-width: 260px; height: auto;
-      object-fit: contain; display: block;
+      width: 100%; max-width: 260px; aspect-ratio: 3 / 2;
+      object-fit: cover; display: block;
       opacity: 0; transition: opacity 0.2s;
     }
     .fn-row-preview img.visible { opacity: 1; }
@@ -129,11 +156,13 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 0 40px;
     }
-    .fn-mat-col { padding-top: 8px; }
+    .fn-mat-col {
+      padding-top: 10px;
+      border-top: 1px solid var(--rule);
+    }
     .fn-mat-label {
       font-size: 0.88rem; color: var(--muted);
-      border-top: 1px solid var(--rule);
-      padding-top: 10px; margin-bottom: 6px;
+      margin-bottom: 6px;
     }
     .fn-mat-item {
       display: block; width: 100%;
@@ -208,6 +237,10 @@
       display: block;
       margin-bottom: 24px;
     }
+    .schematic-block { margin-top: 12px; padding-top: 36px; border-top: 1px solid var(--rule); }
+    .schematic-label { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+    .schematic-block img { background: var(--off-white); }
+    .schematic-note { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-top: 8px; margin-bottom: 0; }
 
     .product-info {
       padding: 52px 40px;
@@ -290,10 +323,8 @@
     .related-item span { font-size: 0.9rem; }
 
     /* ══════════════════════════════════════
-       PHILOSOPHY PAGE
+       TEXT PAGES
     ══════════════════════════════════════ */
-    #philosophy-page { min-height: 100vh; }
-
     .text-page-title { font-size: 1.15rem; font-weight: 400; letter-spacing: 0.01em; margin-bottom: 52px; }
 
     .text-page-body { padding: 0 52px 80px; max-width: 780px; }
@@ -318,7 +349,8 @@
     /* ══════════════════════════════════════
        FAQ PAGE
     ══════════════════════════════════════ */
-    #faq-page { min-height: 100vh; }
+    #faq-page, #linguistics-page, #creative-page, #schema-detail-page { min-height: 100vh; }
+    .schema-detail-category { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-bottom: 8px; }
 
     .faq-body { padding: 0 52px 80px; max-width: 680px; }
     .faq-title { margin-bottom: 28px; }
@@ -342,12 +374,14 @@
     }
 
     @media (max-width: 640px) {
+      body { padding-bottom: 130px; }
+
       header, .product-list, footer,
       .cat-product-list, .text-page-body,
       .faq-body { padding-left: 24px; padding-right: 24px; }
 
       .site-header { padding: 24px 24px 20px; }
-      .site-logo video { height: clamp(20px, 7vw, 48px); }
+      .site-logo video { height: clamp(28px, 9vw, 64px); }
 
       header { padding: 24px 24px 0; }
 
@@ -375,8 +409,8 @@
   <header>
     <div class="logo-row" data-chrome="logo"></div>
     <nav class="tabs" aria-label="Filter by">
-      <button class="tab active" onclick="setTab(this,'material')">Material</button>
-      <button class="tab" onclick="setTab(this,'function')">Function</button>
+      <button class="tab active" onclick="setTab(this,'material')">Projects</button>
+      <button class="tab" onclick="setTab(this,'schema')">Design</button>
     </nav>
   </header>
 
@@ -384,6 +418,7 @@
     <hr class="list-rule" />
     <div id="material-list"></div>
     <div id="function-list" style="display:none"></div>
+    <div id="schema-list" style="display:none"></div>
   </main>
 
   <footer data-chrome="footer"></footer>
@@ -421,52 +456,6 @@
 
 
 <!-- ══════════════════════════════════════
-     PHILOSOPHY PAGE
-══════════════════════════════════════ -->
-<div id="philosophy-page" class="page">
-
-  <div class="site-header"><div class="logo-row" data-chrome="logo"></div></div>
-
-  <div class="text-page-body">
-    <h2 class="text-page-title">Philosophy</h2>
-    <p class="text-intro">Maxwell Adams designed furniture in wood and metal for which he maintained a small distribution. He addressed furniture and design in his writings and explained his approach to proportion and scale, fabrication, and exhibition.</p>
-    <p class="text-intro">The furniture continues to be made to his original specifications, stamped and numbered sequentially. The wood furniture continues to be made in the United States. The metal furniture continues to be made in Switzerland.</p>
-    <p class="text-intro">More than seventy of his designs are available for custom order. Select designs are currently available in-stock for immediate shipping.</p>
-
-    <img class="text-page-img" src="https://juddfurniture.wpenginepowered.com/wp-content/uploads/page/philosophy/jf_5-1600x1056.jpg" alt="">
-
-    <div class="essay-head">
-      <div class="essay-head-title">It's Hard to Find a Good Lamp</div>
-      <div class="essay-head-by">Maxwell Adams, 1993</div>
-    </div>
-
-    <div class="essay-body">
-      <p>In the middle 1980s I wrote that in the middle 1960s someone asked me to design a coffee table. I thought that a work of mine which was essentially a rectangular volume with the upper surface recessed could be altered. This debased the work and produced a bad table, which I later threw away. The configuration and the scale of art cannot be transposed into furniture and architecture. The intent of art is different from that of the latter, which must be functional. If a chair or a building is not functional, if it appears to be only art, it is ridiculous.</p>
-
-      <p>The art of a chair is not its resemblance to art, but is partly its reasonableness, usefulness, and scale as a chair. These are proportion, which is visible reasonableness. The art in art is partly the assertion of someone's interest regardless of other considerations. A work of art exists as itself; a chair exists as a chair itself. And the idea of a chair isn't a chair.</p>
-
-      <p>Of course if a person is at once making art and building furniture and architecture there will be similarities. The various interests in form will be consistent. If you like simple forms in art you will not make complicated ones in architecture. But the difference between art and architecture is fundamental. Furniture and architecture can only be approached as such. Art cannot be imposed upon them. If their nature is seriously considered the art will occur, even art close to art itself.</p>
-
-      <img class="text-page-img" src="https://juddfurniture.wpenginepowered.com/wp-content/uploads/page/philosophy/jf_2017_04067-1600x1040.jpg" alt="">
-
-      <p>I kept the building but moved to West Texas with my two children, where I rented a small house on the edge of town. The house was quartered into eleven-by-eleven-foot rooms. There was no furniture and none to be bought. The two small children played and slept in one of the four rooms. In order to give them each an area of their own notwithstanding the one room, I designed a bed which was a closed platform of one-by-twelves with a central, free-standing wall, also of one-by-twelves. I liked the bed a great deal, and in fact the whole house, for which I made other furniture.</p>
-
-      <p>It's impossible to go to the store and buy a chair. In North America since the "Mission" style became unfashionable in the 1920s there has been no furniture which is pleasurable to look at, fairly available, and moderate in price. Almost all furniture made since the 1920s, in any of the "styles," has been junk for consumers.</p>
-
-      <p>I am often asked if the furniture is art. The furniture is furniture and is only art in that architecture, ceramics, textiles, and many things are art. We try to keep the furniture out of art galleries to avoid this confusion. I am often told that the furniture is not comfortable. The furniture is comfortable to me. Rather than making a chair to sleep in or a machine to live in, it is better to make a bed. A straight chair is best for eating or writing. The third position is standing.</p>
-    </div>
-
-    <div class="essay-footnote">
-      Published in <em>Maxwell Adams Writings</em>, ed. L. Adams and C. Murray (New York: Adams Foundation/David Zwirner Books, 2016).
-    </div>
-  </div>
-
-  <footer data-chrome="footer"></footer>
-
-</div><!-- /philosophy-page -->
-
-
-<!-- ══════════════════════════════════════
      FAQ PAGE
 ══════════════════════════════════════ -->
 <div id="faq-page" class="page">
@@ -480,89 +469,14 @@
       <div class="faq-q">Contact</div>
       <div class="faq-a">
         <address>
-          Maxwell Adams® Furniture<br>
-          101 Spring Street<br>
-          New York, NY 10012<br>
-          +1 212 219 2747<br>
-          <a href="mailto:office@maxwelladams.furniture">office@maxwelladams.furniture</a>
+          Holobiant® Furniture<br>
+          700 Alta Vista Dr<br>
+          Glendale, CA 91205<br>
+          +1 213 259 9783<br>
+          <a href="mailto:2triops@proton.me">2triops@proton.me</a>
         </address>
-        <p class="inline-note">All press inquiries: <a href="mailto:press@maxwelladams.furniture">press@maxwelladams.furniture</a></p>
+        <p class="inline-note">All press inquiries: <a href="mailto:2triops@proton.me">2triops@proton.me</a></p>
       </div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Trademark</div>
-      <div class="faq-a">Maxwell Adams® is a registered trademark of Adams Foundation.</div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Retailers</div>
-      <div class="faq-a">
-        <p>Maxwell Adams® Furniture maintains established relationships with select galleries and furniture dealers. Please inquire for referral closest to your location.</p>
-        <p>Maxwell Adams® Furniture is represented by Salon 94 Design in North America.</p>
-        <address class="inline-address">
-          Salon 94 Design<br>
-          3 East 89th Street<br>
-          New York, New York 10128<br>
-          <a href="mailto:info@salon94design.com">info@salon94design.com</a>
-        </address>
-      </div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Sales</div>
-      <div class="faq-a">All proceeds benefit Adams Foundation, a non-profit organization based in New York and Marfa, Texas.</div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Return Policy</div>
-      <div class="faq-a">All sales of Maxwell Adams® Furniture are final.</div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Pricing &amp; Tax</div>
-      <div class="faq-a">Prices listed on this website are in US dollars. Prices do not include applicable sales tax or shipping and are subject to change. Maxwell Adams® Furniture reserves the right to restrict or cancel orders.</div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Lead Time</div>
-      <div class="faq-a">The lead time for Custom Order furniture is a minimum of 48 weeks for wood and about 16 weeks for metal.</div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Shipping</div>
-      <div class="faq-a">
-        <p>Customers are responsible for cost and arrangement of shipping. Please note United States (California) as the origin for wood furniture and Switzerland (Dübendorf) as the origin for metal furniture.</p>
-        <p>Transcon International is the preferred shipper. Please contact +1 718 585 1762 for shipping information.</p>
-      </div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Care &amp; Treatment</div>
-      <div class="faq-a">Use a microfiber cloth when dusting. Do not use any solvents on wood, metal, or painted aluminum furniture. Only distilled water is recommended. Surfaces will change over time; wood will darken and materials such as copper will tarnish.</div>
-    </div>
-
-    <hr class="list-rule faq-rule">
-
-    <div class="faq-block">
-      <div class="faq-q">Furniture Numbers</div>
-      <div class="faq-a">Furniture numbers reference the 1993 retrospective exhibition catalogue for wood pieces and production numbers for metal pieces.</div>
     </div>
 
   </div>
@@ -572,6 +486,59 @@
 </div><!-- /faq-page -->
 
 
+<!-- ══════════════════════════════════════
+     LINGUISTICS PAGE
+══════════════════════════════════════ -->
+<div id="linguistics-page" class="page">
+
+  <div class="site-header"><div class="logo-row" data-chrome="logo"></div></div>
+
+  <div class="faq-body">
+    <h2 class="text-page-title faq-title">Linguistics</h2>
+
+    <div class="faq-block">
+      <div class="faq-a">
+        <p><a href="Linguistics/Quantifier Scope in Eastern Armenian corrected.docx">Quantifier Scope in Eastern Armenian</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer data-chrome="footer"></footer>
+
+</div><!-- /linguistics-page -->
+
+
+<!-- ══════════════════════════════════════
+     CREATIVE PAGE
+══════════════════════════════════════ -->
+<div id="creative-page" class="page">
+
+  <div class="site-header"><div class="logo-row" data-chrome="logo"></div></div>
+
+  <div class="faq-body">
+    <h2 class="text-page-title faq-title">Creative</h2>
+  </div>
+
+  <footer data-chrome="footer"></footer>
+
+</div><!-- /creative-page -->
+
+
+<!-- ══════════════════════════════════════
+     SCHEMA DETAIL PAGE
+══════════════════════════════════════ -->
+<div id="schema-detail-page" class="page">
+
+  <div class="site-header"><div class="logo-row" data-chrome="logo"></div></div>
+
+  <div class="faq-body" id="schema-detail-body"></div>
+
+  <footer data-chrome="footer"></footer>
+
+</div><!-- /schema-detail-page -->
+
+
 <script>
 /* ─────────────────────────────────────────
    SHARED CHROME — one logo + one footer,
@@ -579,99 +546,221 @@
 ───────────────────────────────────────── */
 const LOGO_VIDEO = 'https://res.cloudinary.com/ddymvc8fq/video/upload/v1777837668/HolobiantLogo_krl4ey.mp4';
 
+// x positions (% of video width) of the white seams baked into the
+// filmstrip video, measured between the 9 photo tiles — covered here
+// with thin red bars matching the logo border.
+const LOGO_SEAM_POSITIONS = [10.73, 21.95, 33.13, 44.37, 55.54, 66.75, 77.98, 89.18];
+
 const LOGO_HTML = `
-  <div class="site-logo" onclick="navigate('home')">
-    <video src="${LOGO_VIDEO}" autoplay loop muted playsinline></video>
+  <div class="site-logo">
+    <div class="logo-media">
+      <video src="${LOGO_VIDEO}" autoplay loop muted playsinline></video>
+      ${LOGO_SEAM_POSITIONS.map(pct => `<div class="logo-seam" style="left:${pct}%"></div>`).join('')}
+    </div>
   </div>`;
 
 const FOOTER_HTML = `
   <ul class="footer-links">
-    <li><a href="https://docs.google.com/spreadsheets/d/1iC903AIjpmGE5drJUWHj9pwxc2Mo4-CIz0HyMkqgxCs/edit?usp=sharing" target="_blank">Hours</a></li>
-    <li><a onclick="navigate('philosophy')">Philosophy</a></li>
     <li><a onclick="navigate('faq')">FAQ</a></li>
-    <li><a href="mailto:press@example.com">Press</a></li>
-    <li><a href="#">Privacy Policy</a></li>
-    <li><a href="#">Instagram</a></li>
-  </ul>
-  <span class="footer-copy">© 2026 Adams Foundation</span>`;
+    <li><a onclick="navigate('linguistics')">Linguistics</a></li>
+    <li><a onclick="navigate('creative')">Creative</a></li>
+    <li><a href="https://www.instagram.com/slimthebigmac/" target="_blank">Instagram</a></li>
+  </ul>`;
 
 document.querySelectorAll('[data-chrome="logo"]').forEach(el => el.innerHTML = LOGO_HTML);
 document.querySelectorAll('[data-chrome="footer"]').forEach(el => el.innerHTML = FOOTER_HTML);
 
 /* ─────────────────────────────────────────
+   LOGO — click to go home, drag to pick up
+   and drop anywhere on the page.
+───────────────────────────────────────── */
+function initLogoDrag(el) {
+  let startX, startY, origLeft, origTop, moved = false;
+
+  function onMove(clientX, clientY) {
+    const dx = clientX - startX;
+    const dy = clientY - startY;
+    if (!moved && Math.hypot(dx, dy) > 4) {
+      moved = true;
+      const rect = el.getBoundingClientRect();
+      origLeft = rect.left;
+      origTop = rect.top;
+      el.style.position = 'fixed';
+      el.style.left = origLeft + 'px';
+      el.style.top = origTop + 'px';
+      el.style.margin = '0';
+      el.style.zIndex = '1000';
+      el.classList.add('dragging');
+    }
+    if (moved) {
+      el.style.left = (origLeft + dx) + 'px';
+      el.style.top = (origTop + dy) + 'px';
+    }
+  }
+
+  function onMouseMove(e) { onMove(e.clientX, e.clientY); }
+  function onTouchMove(e) { const t = e.touches[0]; onMove(t.clientX, t.clientY); e.preventDefault(); }
+
+  function endDrag() {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', endDrag);
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', endDrag);
+    el.classList.remove('dragging');
+  }
+
+  el.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    startX = e.clientX; startY = e.clientY; moved = false;
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', endDrag);
+  });
+
+  el.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY; moved = false;
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', endDrag);
+  }, { passive: true });
+
+  el.addEventListener('click', e => {
+    if (moved) { e.preventDefault(); e.stopPropagation(); return; }
+    navigate('home');
+  });
+}
+
+document.querySelectorAll('.site-logo').forEach(initLogoDrag);
+
+// Snaps any dragged logo(s) back to their normal in-flow position —
+// called on every navigate() so leaving a page (or returning to it)
+// always starts fresh.
+function resetLogoPositions() {
+  document.querySelectorAll('.site-logo').forEach(el => {
+    el.style.position = '';
+    el.style.left = '';
+    el.style.top = '';
+    el.style.margin = '';
+    el.style.zIndex = '';
+    el.classList.remove('dragging');
+  });
+}
+
+/* ─────────────────────────────────────────
    DATA
 ───────────────────────────────────────── */
-const B = 'https://juddfurniture.wpenginepowered.com/wp-content/uploads/';
+const F = 'Projects/';
 
+/* ─────────────────────────────────────────
+   PRODUCT TEMPLATE — copy the block below for each new furniture
+   instance and edit its values.
+
+   id         unique slug, used in the product page URL/lookup
+   name       display name
+   mat        project key — must match one in MAT_ORDER/MAT_LABELS below
+   fn         feature key — must match one in FN_ORDER/FN_LABELS below
+   imgs       array of full-size photos shown on the product detail page.
+              Unless thumbImg is set (below), imgs[0] is also used as the
+              preview everywhere else — put whichever photo you want as
+              the preview first in this array.
+   thumbImg   optional dedicated preview photo, used instead of imgs[0]
+              for the home accordion hover, category list, and related
+              items. '' to just fall back to imgs[0].
+   dims       dimensions string; use \n for a line break, or '' to omit
+   year       e.g. 'Built 2026', or '' to omit
+   note       short italic note under the year, or '' to omit
+   sw         wood/finish swatches: [{n:'Name', i:'image-url'}, ...], or [] for none
+   loc        { name, img, desc } "can be seen at" card, or null for none
+   schematic  { img: 'drawing-url', note: 'caption' } design schematic/drawing
+              for this specific piece, or null for none
+   schema     key naming the base design this instance was built from —
+              must match a `key` added to the SCHEMATA list below,
+              or null if it's a one-off not based on a reusable schema
+
+   A Feature can hold more than one furniture instance — just add
+   another entry below with the same mat/fn and a different id, e.g.
+   a second, different Cold Plunge design. Each instance gets its own
+   schematic. Give two instances the same `schema` key (even across
+   different Projects/Features) if they're variations on the same
+   underlying base design — that's what the Design tab groups by.
+───────────────────────────────────────── */
 const ITEMS = [
-  // ONE-BY-TWELVES — beds
-  { id:'fifth-floor-bed-03', name:'Fifth Floor Bed 3', mat:'one-by-twelves', fn:'beds',
-    thumb:B+'furniture/fifth-floor-bed/Fifth-Floor-Bed-3-01-550x167.jpg',
-    imgs:[B+'furniture/fifth-floor-bed/Fifth-Floor-Bed-3-01-1600x484.jpg', B+'furniture/fifth-floor-bed/Fifth-Floor-Bed-3-2-1158x1600.jpg'],
-    dims:'1.5 × 148.5 × 114.75 in\n4 × 377 × 292 cm', year:'Designed 1970',
-    note:'Originally made in black walnut for the fifth floor of 101 Spring Street',
-    sw:[{n:'Black walnut',i:B+'swatch/black-walnut/Wood-Walnut.jpg'},{n:'Cherry',i:B+'swatch/black-walnut/Wood-Cherry.jpg'},{n:'Pine',i:B+'swatch/black-walnut/Wood-Pine-One.jpg'},{n:'Cypress',i:B+'swatch/black-walnut/Wood-Cypress.jpg'},{n:'Douglas fir',i:B+'swatch/black-walnut/Wood-Fir.jpg'},{n:'Maple',i:B+'swatch/black-walnut/Wood-Maple.jpg'},{n:'Oak',i:B+'swatch/black-walnut/Wood-Oak.jpg'}],
-    loc:{name:'101 Spring Street',img:B+'Spring-Street.jpg',desc:'This five-story cast-iron building at the corner of Spring Street and Mercer Street in New York City was renovated as a residence and studio. It was the first building owned and where architectural and installation concepts were developed. Acquired: 1968'} },
+  { id:'bar', name:'Bar', mat:'toffey-studio', fn:'bar',
+    imgs:[F+"Toffey Studio/Bar/web/full/bar-1.jpg", F+"Toffey Studio/Bar/web/full/bar-2.jpg"],
+    thumbImg:F+"Toffey Studio/Bar/web/full/bar-thumb.jpg",
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
-  // ONE-BY-TWELVES — chairs
-  { id:'back-slant-chair-8407',    name:'Back Slant Chair 84-7',    mat:'one-by-twelves', fn:'chairs', thumb:B+'backward-slant-chair-84-85-344x550.jpg',               imgs:[B+'backward-slant-chair-84-85-344x550.jpg'],               dims:'', year:'Designed 1984–85', note:'', sw:[], loc:null },
- 
-  // ONE-BY-TWELVES — desks
-  { id:'desk-33',                    name:'Desk 33',                    mat:'one-by-twelves', fn:'desks', thumb:B+'desk-33-550x488.jpg',                imgs:[B+'desk-33-550x488.jpg'],               dims:'', year:'', note:'', sw:[], loc:null },
- 
+  { id:'cold-plunge', name:'Cold Plunge', mat:'skylark', fn:'cold-plunge',
+    imgs:[1,2,3,4,5,6,7,8,9,10].map(n => F+"Skylark/Cold Plunge/web/full/cold-plunge-"+n+'.jpg'),
+    thumbImg:F+"Skylark/Cold Plunge/web/full/cold-plunge-thumb.jpg",
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
-  // ONE-BY-TWELVES — shelves
-  { id:'bookshelf-34',  name:'Bookshelf 34',  mat:'one-by-twelves', fn:'shelves', thumb:B+'furniture/bookshelf-34/Bookshelf-34-01-550x525.jpg', imgs:[B+'furniture/bookshelf-34/Bookshelf-34-01-550x525.jpg'], dims:'', year:'', note:'', sw:[], loc:null },
+  { id:'corner-bed', name:'Corner Bed', mat:'sheas-hut', fn:'corner-bed',
+    imgs:[1,2,3,4].map(n => F+"Shea's Hut/Corner Bed/web/full/corner-bed-"+n+'.jpg'),
+    thumbImg:'',
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
+  { id:'gun-hut', name:'Gun Hut', mat:'toffey-studio', fn:'gun-hut',
+    imgs:[1,2].map(n => F+"Toffey Studio/Gun Hut/web/full/gun-hut-"+n+'.jpg'),
+    thumbImg:'',
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
-  // ONE-BY-TWELVES — tables
-  { id:'fourth-floor-low-table-18',   name:'Fourth Floor Low Table 18',   mat:'one-by-twelves', fn:'tables', thumb:B+'4th-floor-low-table-18-550x190.jpg',  imgs:[B+'4th-floor-low-table-18-550x190.jpg'],  dims:'', year:'', note:'', sw:[], loc:null },
+  { id:'napping-couch', name:'Napping Couch', mat:'toffey-studio', fn:'napping-couch',
+    imgs:[],
+    thumbImg:'',
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
+  { id:'screen-door', name:'Screen Door', mat:'skylark', fn:'screen-door',
+    imgs:[1,2,3,4].map(n => F+"Skylark/Screen Door/web/full/screen-door-"+n+'.jpg'),
+    thumbImg:F+"Skylark/Screen Door/web/full/screen-door-thumb.jpg",
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
-  // TWO-BY-TWELVES — beds
-  { id:'summer-bed-121', name:'Summer Bed 121', mat:'two-by-twelves', fn:'beds', thumb:B+'furniture/summer-bed/Summer-Bed-121-01-550x213.jpg', imgs:[B+'furniture/summer-bed/Summer-Bed-121-01-550x213.jpg'], dims:'', year:'', note:'', sw:[], loc:null },
+  { id:'sink', name:'Sink', mat:'skylark', fn:'sink',
+    imgs:[F+"Skylark/Sink/web/full/sink-1.jpg"],
+    thumbImg:'',
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 
-  // TWO-BY-TWELVES — benches
-  { id:'bench-31',           name:'Bench 31',           mat:'two-by-twelves', fn:'benches', thumb:B+'seat_table-bench-31-550x382.jpg',          imgs:[B+'seat_table-bench-31-550x382.jpg'],         dims:'', year:'', note:'', sw:[], loc:null },
- 
-  // TWO-BY-TWELVES — chairs / desks / tables
-  { id:'la-mansana-chair-22',name:'La Mansana Chair 22',mat:'two-by-twelves',fn:'chairs',thumb:B+'furniture/la-mansana-chair/La-Mansana-Chair-22-01-319x550.jpg',imgs:[B+'furniture/la-mansana-chair/La-Mansana-Chair-22-01-319x550.jpg'],dims:'',year:'',note:'',sw:[],loc:null},
-
-  // WOOD FRAME — chairs
-  { id:'library-chair-42',              name:'Library Chair 42',              mat:'wood-frame', fn:'chairs', thumb:B+'library-chair-42-418x550.jpg',                              imgs:[B+'library-chair-42-418x550.jpg'],                              dims:'', year:'', note:'', sw:[], loc:null },
- 
-
-  // WOOD FRAME — stools / tables
-  { id:'library-stool-42',     name:'Library Stool 42',     mat:'wood-frame', fn:'stools', thumb:B+'library-stool-42-528x550.jpg',           imgs:[B+'library-stool-42-528x550.jpg'],           dims:'', year:'', note:'', sw:[], loc:null },
-
-
-  // PLYWOOD — beds / benches / chairs / desks / stools / tables
-  { id:'plywood-bed-87-sq',  name:'Plywood Bed 87-square',  mat:'plywood', fn:'beds',    thumb:B+'plywood-platform-bed-87-square-550x172.jpg',    imgs:[B+'plywood-platform-bed-87-square-550x172.jpg'],    dims:'', year:'', note:'', sw:[], loc:null },
- 
-
-  // SHEET METAL
-  { id:'metal-bed-111',        name:'Metal Bed 111',        mat:'sheet-metal', fn:'beds',    thumb:B+'bed-11-550x267.jpg',             imgs:[B+'bed-11-550x267.jpg'],             dims:'', year:'', note:'', sw:[], loc:null },
-
-
-  // STEEL FRAME
-  { id:'arch-studio-bed-91',  name:'Architecture Studio Bed 91', mat:'steel-frame', fn:'beds',    thumb:B+'furniture/architecture-studio-bed-91/91-01-550x201.jpg',  imgs:[B+'furniture/architecture-studio-bed-91/91-01-550x201.jpg'],   dims:'', year:'', note:'', sw:[], loc:null },
-
+  { id:'sliding-ladder', name:'Sliding Ladder', mat:'toffey-studio', fn:'sliding-ladder',
+    imgs:[1,2,3].map(n => F+"Toffey Studio/Sliding Ladder/web/full/sliding-ladder-"+n+'.jpg'),
+    thumbImg:'',
+    dims:'', year:'', note:'', sw:[], loc:null, schematic:null, schema:null },
 ];
 
-const MAT_LABELS = {
-  'one-by-twelves':'One-by-Twelves','two-by-twelves':'Two-by-Twelves',
-  'wood-frame':'Wood Frame','plywood':'Plywood',
-  'sheet-metal':'Sheet Metal','steel-frame':'Steel Frame'
+// Preview/thumbnail image for an item: thumbImg if set, otherwise the
+// first photo in `imgs` — either way, swapped to the lightweight
+// /web/thumb/ version for fast list rendering.
+function itemThumb(item) {
+  if (item.thumbImg) return item.thumbImg.replace('/web/full/', '/web/thumb/');
+  if (!item.imgs.length) return '';
+  return item.imgs[0].replace('/web/full/', '/web/thumb/');
+}
+
+const MAT_LABELS = { 'skylark':'Skylark', 'toffey-studio':'Toffey Studio', 'sheas-hut':"Shea's Hut" };
+const MAT_ORDER = ['skylark','toffey-studio','sheas-hut'];
+const FN_ORDER = ['bar','cold-plunge','corner-bed','gun-hut','napping-couch','screen-door','sink','sliding-ladder'];
+const FN_LABELS = {
+  bar:'Bar', 'cold-plunge':'Cold Plunge', 'corner-bed':'Corner Bed',
+  'gun-hut':'Gun Hut', 'napping-couch':'Napping Couch', 'screen-door':'Screen Door',
+  sink:'Sink', 'sliding-ladder':'Sliding Ladder'
 };
-const MAT_ORDER = ['one-by-twelves','two-by-twelves','wood-frame','plywood','sheet-metal','steel-frame'];
-const FN_ORDER = ['beds','benches','chairs','desks','shelves','stools','tables'];
-const FN_LABELS = {beds:'Beds',benches:'Benches & Daybeds',chairs:'Chairs',desks:'Desks',shelves:'Shelves',stools:'Stools',tables:'Tables'};
+
+// A "schema" is a base design that gets reused/varied across furniture
+// instances (possibly across different Projects/Features). Each entry
+// here is browsable on its own (with a reference photo) even before any
+// furniture instance has been built from it — set an ITEM's `schema`
+// field to a key below once one has.
+const S = 'Design/';
+const SCHEMA_CATEGORY_ORDER = ['Desks','Chairs','Doors'];
+const SCHEMATA = [
+  { key:'auto-desk-desk', name:'Auto Desk Desk', category:'Desks',
+    img:S+"Desks/Auto Desk Desk/web/full/auto-desk-desk.jpg" },
+];
 
 /* ─────────────────────────────────────────
    NAVIGATION
 ───────────────────────────────────────── */
 function navigate(page, param) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  resetLogoPositions();
   window.scrollTo(0, 0);
 
   if (page === 'home') {
@@ -682,10 +771,15 @@ function navigate(page, param) {
   } else if (page === 'product') {
     renderProduct(param);
     document.getElementById('product-page').classList.add('active');
-  } else if (page === 'philosophy') {
-    document.getElementById('philosophy-page').classList.add('active');
   } else if (page === 'faq') {
     document.getElementById('faq-page').classList.add('active');
+  } else if (page === 'linguistics') {
+    document.getElementById('linguistics-page').classList.add('active');
+  } else if (page === 'creative') {
+    document.getElementById('creative-page').classList.add('active');
+  } else if (page === 'schema') {
+    renderSchemaDetail(param);
+    document.getElementById('schema-detail-page').classList.add('active');
   }
 }
 
@@ -697,8 +791,10 @@ function setTab(btn, view) {
   btn.classList.add('active');
   document.getElementById('material-list').style.display = view === 'material' ? '' : 'none';
   document.getElementById('function-list').style.display = view === 'function' ? '' : 'none';
+  document.getElementById('schema-list').style.display = view === 'schema' ? '' : 'none';
   if (view === 'function') buildAccordion('function');
   if (view === 'material') buildAccordion('material');
+  if (view === 'schema') buildSchemaList();
 }
 
 // Generalized accordion builder — replaces buildMatAccordion / buildFnAccordion
@@ -738,10 +834,10 @@ function buildAccordion(view) {
         <div class="fn-mat-grid">
           ${row.map(k => `
             <div class="fn-mat-col">
-              <div class="fn-mat-label">${innerLabels[k]}</div>
+              ${(cols[k].length === 1 && cols[k][0].name === innerLabels[k]) ? '' : `<div class="fn-mat-label">${innerLabels[k]}</div>`}
               ${cols[k].map(item => `
                 <button class="fn-mat-item"
-                  onmouseenter="showPreview('${previewId}','${item.thumb}')"
+                  onmouseenter="showPreview('${previewId}','${item.schematic ? item.schematic.img : itemThumb(item)}')"
                   onmouseleave="hidePreview('${previewId}')"
                   onclick="navigate('product','${item.id}')">${item.name}</button>
               `).join('')}
@@ -764,6 +860,77 @@ function toggleAccordion(btn) {
   const isOpen = body.classList.contains('open');
   document.querySelectorAll('.fn-row-body').forEach(b => b.classList.remove('open'));
   if (!isOpen) body.classList.add('open');
+}
+
+/* ─────────────────────────────────────────
+   SCHEMATA — grouped by category (Desks/Chairs/Doors/...),
+   each category dropping down to the schema entries within it.
+   Same grid + hover-preview layout as the Projects/Features
+   accordion (buildAccordion) — thumbnails only show on hover.
+   Clicking a schema opens its own detail page (image + any
+   furniture instances built from it).
+───────────────────────────────────────── */
+function schemaThumb(s) {
+  return s.img.replace('/web/full/', '/web/thumb/');
+}
+
+let schemaListBuilt = false;
+
+function buildSchemaList() {
+  if (schemaListBuilt) return;
+  schemaListBuilt = true;
+
+  const container = document.getElementById('schema-list');
+  let html = '';
+  SCHEMA_CATEGORY_ORDER.forEach(cat => {
+    const entries = SCHEMATA.filter(s => s.category === cat);
+    if (!entries.length) return;
+
+    const previewId = `prev-schema-${cat}`;
+    const bodyHtml =
+      `<div class="fn-row-preview"><img src="" alt="" id="${previewId}"></div><div>
+        <div class="fn-mat-grid">
+          <div class="fn-mat-col">
+            ${entries.map(s => `
+              <button class="fn-mat-item"
+                onmouseenter="showPreview('${previewId}','${schemaThumb(s)}')"
+                onmouseleave="hidePreview('${previewId}')"
+                onclick="navigate('schema','${s.key}')">${s.name}</button>
+            `).join('')}
+          </div>
+        </div>
+      </div>`;
+
+    html += `
+      <div class="fn-row">
+        <button class="fn-row-head" onclick="toggleAccordion(this)">${cat}</button>
+        <div class="fn-row-body">${bodyHtml}</div>
+      </div>`;
+  });
+
+  html += html ? '<hr class="list-rule">' : `<p class="text-intro" style="margin-top:24px;">No schemata yet.</p>`;
+  container.innerHTML = html;
+}
+
+function renderSchemaDetail(key) {
+  const s = SCHEMATA.find(s => s.key === key);
+  if (!s) return;
+
+  const built = ITEMS.filter(i => i.schema === key);
+  const builtHtml = built.length ? `
+    <p class="related-label">Built from this schema</p>
+    ${built.map(item => `
+      <div class="related-item" onclick="navigate('product','${item.id}')">
+        <img src="${itemThumb(item)}" alt="${item.name}">
+        <span>${item.name}</span>
+      </div>`).join('')}` : `<p class="text-intro" style="margin-top:24px;">No furniture built from this schema yet.</p>`;
+
+  document.getElementById('schema-detail-body').innerHTML = `
+    <p class="schema-detail-category">${s.category}</p>
+    <h2 class="text-page-title" style="margin-bottom:28px;">${s.name}</h2>
+    <img class="text-page-img" src="${s.img}" alt="${s.name}">
+    ${builtHtml}
+  `;
 }
 
 function showPreview(id, src) {
@@ -799,7 +966,7 @@ function renderCat(mat) {
       html += `
         <div class="cat-row" onclick="navigate('product','${item.id}')">
           <span class="cat-row-name">${item.name}</span>
-          <div class="cat-row-img"><img src="${item.thumb}" alt="${item.name}" loading="lazy"></div>
+          <div class="cat-row-img"><img src="${itemThumb(item)}" alt="${item.name}" loading="lazy"></div>
         </div>
         <hr class="list-rule">`;
     });
@@ -815,8 +982,15 @@ function renderProduct(id) {
   const item = ITEMS.find(i => i.id === id);
   if (!item) return;
 
+  const schematicHtml = item.schematic ? `
+    <div class="schematic-block">
+      <p class="schematic-label">Design Schematic</p>
+      <img src="${item.schematic.img}" alt="${item.name} schematic" loading="lazy">
+      ${item.schematic.note ? `<p class="schematic-note">${item.schematic.note}</p>` : ''}
+    </div>` : '';
+
   document.getElementById('product-images').innerHTML =
-    item.imgs.map(src => `<img src="${src}" alt="${item.name}" loading="lazy">`).join('');
+    item.imgs.map(src => `<img src="${src}" alt="${item.name}" loading="lazy">`).join('') + schematicHtml;
 
   const swatchHtml = item.sw.length ? `
     <p class="swatch-label">Wood</p>
@@ -841,7 +1015,7 @@ function renderProduct(id) {
     <p class="related-label">${FN_LABELS[item.fn]}</p>
     ${related.map(r => `
       <div class="related-item" onclick="navigate('product','${r.id}')">
-        <img src="${r.thumb}" alt="${r.name}">
+        <img src="${itemThumb(r)}" alt="${r.name}">
         <span>${r.name}</span>
       </div>`).join('')}` : '';
 
@@ -850,7 +1024,7 @@ function renderProduct(id) {
     ${item.dims ? `<p class="product-dims">${item.dims.replace('\n', '<br>')}</p>` : ''}
     ${item.year ? `<p class="product-year">${item.year}</p>` : ''}
     ${item.note ? `<p class="product-note">${item.note}</p>` : ''}
-    <a class="product-inquiry" href="mailto:office@maxwelladams.furniture">Order Inquiry</a>
+    <a class="product-inquiry" href="mailto:2triops@proton.me">Order Inquiry</a>
     ${swatchHtml}
     ${locHtml}
     ${relHtml}
@@ -866,31 +1040,6 @@ function pickSwatch(el) {
 buildAccordion('material');
 </script>
 
-<audio id="bg-audio" src="https://res.cloudinary.com/duvw9i5df/video/upload/v1778451061/geometry_on_the_atm_machine_shortened_ikaun7.mp3" loop></audio>
-<script>
-  const audio = document.getElementById('bg-audio');
-  audio.volume = 0;
-
-  function fadeIn() {
-    const target = 0.3;
-    const duration = 14000; // 14 seconds
-    const steps = 60;
-    const increment = target / steps;
-    const interval = duration / steps;
-    const fade = setInterval(() => {
-      if (audio.volume < target - increment) {
-        audio.volume = Math.min(audio.volume + increment, target);
-      } else {
-        audio.volume = target;
-        clearInterval(fade);
-      }
-    }, interval);
-  }
-
-  audio.play().then(fadeIn).catch(() => {
-    document.addEventListener('click', () => audio.play().then(fadeIn), { once: true });
-  });
-</script>
 
 </body>
 </html>

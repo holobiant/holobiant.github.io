@@ -1,0 +1,16 @@
+# macOS / tooling
+.DS_Store
+.claude/
+
+# Full-resolution camera originals (20-30 MB each) — the site only uses the
+# resized copies in each folder's web/ subfolder
+Projects/*/*/*.[jJ][pP][gG]
+Projects/*/*/*.[jJ][pP][eE][gG]
+Design/*/*/*.[jJ][pP][gG]
+Design/*/*/*.[jJ][pP][eE][gG]
+
+# Unused / scratch files not referenced by the site
+fonts/
+logo/
+800x100/
+table.html
